@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>The Kenyan Counties app</title>
+     <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+	<div class="header">
+		<h1>The Kenyan Counties</h1>
+	</div>
+	<div class="wrapper">
+		<div class="counties">
+			<input type="search" id="search" placeholder="search...">
+			<button onclick="search()">Go</button>
+			
+			<ol id="county_list"></ol>
+		</div>
+		<div class="county">
+			<h3 id="county_text"></h3>
+			<p id="description"></p>
+			
+			<hr>
+
+			<h3>Neighbour Counties:</h3>
+			<li id="neighbour"></li>
+
+		</div>
+	</div>
+</body>
+</html>
+
+<script type="text/javascript">
+	var directory = [
+                             {
+                             	county:"Nairobi",
+                             	desc:"The Governor is <b>Mike Mbuvi Sonko</b>, and its population is 10 million. The subcounties include Westlands, Dagorethi North, Dagorethi South, Mathare, Roysambu, Kasarani, Embakasi East, Embakasi West, Embakasi North, Embakasi South, Embakasi Central, Kamukunji, Kibra, Starehe, Makadara, Ruaraka, and Langata.",
+                             	neigh:["Kiambu","Machakos","Kajiado"]
+                             },
+                             {
+                             	county:"Kiambu",
+                             	desc:"The Governor is <b>Ferdinand Waititu</b>, and its population is 7.5 million",
+                             	neigh:["Nairobi","Nakuru","Muranga"]
+                             },
+                             {
+                             	county:"Machakos",
+                             	desc:"The Governor is <b>Dr. Alfred Mutua</b>, and its population is 5 million",
+                             	neigh:["Kajiado","Nairobi","Makueni"]
+                             },
+                             {
+                             	county:"Nakuru",
+                             	desc:"The Governor is <b>Lee Kinyanjui</b>, and its population is 12 million",
+                             	neigh:["Kericho","Baringo","Narok"]
+                             },
+                             {
+                             	county:"Kericho",
+                             	desc:"The Governor is <b>Paul Chepkwony</b>, and its population is 5 million",
+                             	neigh:["Bomet","Nakuru","Kisii"]
+                             },
+                            
+
+	];
+
+     //fill the directory with counties
+	init = function(){
+	    for (var i = 0; i < directory.length; i++) {
+	    document.getElementById('county_list').innerHTML += "<li onclick='show(" + i + ")'>" + 
+	    directory[i].county + "</li>";
+	    }
+	}
+
+
+	//call the init function when page loads
+	init();
+
+	//display a county, its descripion and neighbouring counties
+	show = function(i){
+		document.getElementById('county_text').innerHTML = directory[i].county;
+		document.getElementById('description').innerHTML = directory[i].desc;
+
+		var list = "";
+		for (var j = 0; j < directory[i].neigh.length; j++) {
+			list += "<li>" + directory[i].neigh[j] + "</li>";
+			document.getElementById('neighbour').innerHTML = list;
+
+			
+		}
+
+    }
+
+    // show first county in the directory when page load
+    show(0);
+
+    //search functonality
+    search = function(){
+    	query = document.getElementById('search').value;
+
+    	if (query == "") {
+    		return;
+    	}
+
+    	found = -1 // initialize found to false
+    	for (var i = 0; i < directory.length; i++) {
+    		if (query == directory[i].county) {
+    			found = i;
+    			break;
+    		}else{
+    			document.getElementById('county_text').innerHTML = "County not found";
+    			document.getElementById('description').innerHTML = "The County you entered is not in our directory";
+    			document.getElementById('neighbour').innerHTML = "No neighbouring counties"
+    		}
+    	}
+    	if (found >= 0) {
+    		show(found);
+    	}
+    }
+</script>
